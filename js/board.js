@@ -14,13 +14,13 @@ export class Board {
         squareEl.draggable = true;
         squareEl.ondragstart = (e) => e.dataTransfer.setData('text/plain', squareIndex);
         squareEl.ondragover = (e) => e.preventDefault();
-        squareEl.ondrop = (e) => this.squareDropped(e, squareIndex);
+        squareEl.ondrop = (e) => this.pieceDrop(e, squareIndex);
         el.appendChild(squareEl);
       }
     }
   }
 
-  squareDropped(e, myIndex) {
+  pieceDrop(e, myIndex) {
     e.preventDefault();
     const from = parseInt(e.dataTransfer.getData('text/plain'));
     const to = parseInt(myIndex);

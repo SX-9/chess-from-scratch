@@ -1,14 +1,23 @@
 import { Board } from './js/board.js';
+import { MoveGeneration } from './js/moves.js';
 
-const boardEl = document.querySelector('#board');
-const board = new Board(boardEl, {
+const moveGeneration = new MoveGeneration({
+  onEnd() {
+    alert('Game Over!');
+  }
+});
+const board = new Board(document.querySelector('#board'), {
   isLegalMove(board, from, to) {
-    return true;
+    let isLegal = false;
+
+    // moveGeneration.load(board);
+    // const moves = moveGeneration.generate();
+    // if (moves[to] && moves[to].includes(from)) {
+      isLegal = true;
+    // }
+
+    return isLegal;
   }
 });
 
 board.load('starting');
-
-function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
