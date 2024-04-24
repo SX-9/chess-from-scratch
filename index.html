@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess</title>
+  <style>
+    * {
+      color-scheme: dark;
+      font-family: monospace;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      width: 40em;
+      aspect-ratio: 1/1;
+    }
+
+    #board > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #board > div:nth-child(1) {
+    border-radius: .5em 0 0 0; }
+    #board > div:nth-child(8) {
+    border-radius: 0 .5em 0 0; }
+    #board > div:nth-child(64) {
+    border-radius: 0 0 .5em 0; }
+    #board > div:nth-child(57) {
+    border-radius: 0 0 0 .5em; }
+
+    #board > div.white {
+    background-color: hsl(90, 45%, 88%); }
+    #board > div.black {
+    background-color: hsl(90, 27%, 46%); }
+    #board > div.white.highlight {
+    background-color: hsl(220, 45%, 80%); }
+    #board > div.black.highlight {
+    background-color: hsl(220, 27%, 46%); }
+
+    img {
+      aspect-ratio: 1/1;
+      width: 5em;
+    }
+
+    body {
+      background-color: #2c2b29;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="board"></div>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
