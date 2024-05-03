@@ -6,18 +6,32 @@ const moveGeneration = new MoveGeneration({
     alert('Game Over!');
   }
 });
+
 const board = new Board(document.querySelector('#board'), {
-  isLegalMove(board, from, to) {
+  isLegalMove(board, from, to, turn) {
     let isLegal = false;
 
-    // moveGeneration.load(board);
-    // const moves = moveGeneration.generate();
-    // if (moves[to] && moves[to].includes(from)) {
+    moveGeneration.load(board, turn);
+    const moves = moveGeneration.generate();
+    if (moves[to] && moves[to].includes(from)) {
       isLegal = true;
-    // }
+      const newTurn = moveGeneration.utils.invertTurn(moveGeneration.turn);
+      moveGeneration.turn = newTurn;
+    }
 
+    console.log('isLegal', isLegal);
+    console.log('from', from);
+    console.log('to', to);
+    console.log('turn', turn);
+    // console.log('moves', moves);
+    
     return isLegal;
-  }
+  }, numbered: 1
 });
 
-board.load('starting');
+const testPositions = [
+  '8881qQrRbB',
+  'knn5pppppppp8888PPPPPPPP5NNK',
+];
+
+board.load(testPositions[1], 'w');
