@@ -1,0 +1,135 @@
+* {
+  color-scheme: dark;
+  font-family: monospace;
+}
+
+body {
+  background-color: #2c2b29;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  gap: 1em;
+}
+
+div#board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 40em;
+  aspect-ratio: 1/1;
+}
+
+div#board > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div#board > div p {
+  cursor: default;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  color: black;
+}
+
+div#board > div:has(img) p {
+  text-align: left;
+}
+
+div#board > div:nth-child(1) {
+border-radius: .7em 0 0 0; }
+div#board > div:nth-child(8) {
+border-radius: 0 .7em 0 0; }
+div#board > div:nth-child(64) {
+border-radius: 0 0 .7em 0; }
+div#board > div:nth-child(57) {
+border-radius: 0 0 0 .7em; }
+
+div#board > div.white {
+background-color: hsl(90, 45%, 88%); }
+div#board > div.black {
+background-color: hsl(90, 27%, 46%); }
+div#board > div.white.highlight {
+background-color: hsl(0, 45%, 80%); }
+div#board > div.black.highlight {
+background-color: hsl(0, 27%, 46%); }
+
+img {
+  aspect-ratio: 1/1;
+  width: 4.5em;
+}
+
+.smaller img {
+  width: 3.5em;
+}
+
+[draggable] {
+  cursor: grab;
+}
+
+div#history {
+  max-width: 20em;
+  max-height: 38em;
+}
+
+div#history > div {
+  padding: .5em;
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 5em 5em;
+  overflow-y: scroll;
+  max-height: 30em;
+  margin: .2em;
+}
+
+div#history > div div {
+  padding: .1em;
+  border-radius: .5em;
+  text-align: center;
+}
+
+div#history > div div.b {
+  background-color: hsl(0, 0%, 10%);
+  color: white;
+}
+
+div#history > div div.w {
+  background-color: hsl(0, 0%, 80%);
+  color: black;
+}
+
+div#controls {
+  max-width: 14em;
+  max-height: 38em;
+  width: 100%;
+}
+
+pre {
+  line-height: 12px;
+  letter-spacing: 1px;
+  width: min-content;
+  padding: .2em;
+}
+
+th, td {
+  padding: .2em;
+}
+
+p {
+  margin: .1em;
+}
+
+p.word-wrap {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  max-height: 1.7em;
+  max-width: 90%;
+}
