@@ -208,7 +208,7 @@ export class MoveGenerator {
       enPassant: this.board.enPassant === to,
       castling: this.board.board[from]?.toLowerCase() === "k" && [2, 6, 58, 62].includes(to),
       capture: !!this.board.board[to] || this.board.enPassant === to,
-      kingCapture: this.board.board[to]?.toLowerCase() === "k",
+      // kingCapture: this.board.board[to]?.toLowerCase() === "k",
     };
     this.moves.push(move);
   }
