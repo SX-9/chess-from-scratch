@@ -56,6 +56,7 @@ export class MoveGenerator {
     if (square === null) return;
     const piece = this.board.board[square];
     if (!piece) return;
+    debugger
     const direction = utils.isWhitePiece(piece) ? -8 : 8;
     const in1stRank = utils.getFileRank(square).rank === (utils.isWhitePiece(piece) ? 6 : 1);
     const squareInFrontFR = utils.getFileRank(square + direction as Square);
@@ -67,7 +68,7 @@ export class MoveGenerator {
       this.addMoveInternal(square, target as Square);
       if ( (this.board.board[target + 1] && utils.isWhitePiece(this.board.board[target + 1]) !== (this.board.turn === 'w') && this.board.board[target + 1]?.toLowerCase() === "p") 
         || (this.board.board[target - 1] && utils.isWhitePiece(this.board.board[target - 1]) !== (this.board.turn === 'w') && this.board.board[target - 1]?.toLowerCase() === "p")) {
-        this.board.enPassant = target - 8 as Square;
+        this.board.enPassant = target - direction as Square;
       }
     }
 
