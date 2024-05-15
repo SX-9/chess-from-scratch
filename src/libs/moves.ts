@@ -1,4 +1,4 @@
-import { Move, Square, SquareXYoffset, Piece, AxisVal, Turn } from "./types";
+import { Move, Square, SquareXYoffset, Piece, AxisVal } from "./types";
 import { BoardArray } from "./array";
 import utils from "./utils";
 
