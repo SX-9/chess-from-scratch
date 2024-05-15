@@ -8,6 +8,12 @@ export default {
   name: 'App',
   methods: {
     ...utils,
+
+    highlightAllMoves() {
+      this.moveGen.generateAll();
+      this.moveGen.moves.forEach(m => this.highlights.addHighlight(m.to));
+    },
+
     showFen() {
       prompt('FEN:', this.board.fen as string);
     },
@@ -77,7 +83,7 @@ export default {
       'r4rk1/ppp1ppbp/2nqbnp1/3pN3/3P1B2/2PBP3/PP1N1PPP/R2QK2R b KQ - 5 9', // london system vs king's indian
     ];
     document.onselectstart = () => false;
-    this.board = new BoardArray(testFens[0]);
+    this.board = new BoardArray(testFens[5]);
     this.moveGen.load(this.board);
   },
 }
@@ -87,6 +93,8 @@ export default {
   <div id="history">
     <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
     <button @click="showFen()">show starting fen</button>
+    <br><br>
+    <button @click="highlightAllMoves()">show all moves</button>
     <br><br>
     <label for="promotion">promotion: </label>
     <select id="promotion" v-model="promotion">
