@@ -8,11 +8,15 @@ export type Move = {
   turn: Turn;
   piece?: Piece;
   promotion?: Piece;
-  enPassant?: Boolean;
-  castling?: Boolean;
-  capture?: Boolean;
+  enPassant?: boolean;
+  castling?: boolean;
+  capture?: boolean;
 };
+export type SquareXYoffset = {
+  file: number;
+  rank: number;
+}
 export type CastlingRights = {
-  w: { k: Boolean; q: Boolean };
-  b: { k: Boolean; q: Boolean };
+  w: { k: boolean; q: boolean };
+  b: { k: boolean; q: boolean };
 };

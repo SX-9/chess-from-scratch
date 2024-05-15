@@ -1,4 +1,4 @@
-import { Move, Square, Piece } from "./types";
+import { Move, Square, SquareXYoffset, Piece, AxisVal } from "./types";
 import { BoardArray } from "./array";
 import utils from "./utils";
 
@@ -42,8 +42,9 @@ export class MoveGenerator {
     if (!piece) return;
     const direction = utils.isWhitePiece(piece) ? -8 : 8;
     const in1stRank = utils.getFileRank(square).rank === (utils.isWhitePiece(piece) ? 6 : 1);
-    const leftCapture = square + direction - 1;
-    const rightCapture = square + direction + 1;
+    const squareInFrontFR = utils.getFileRank(square + direction as Square);
+    const leftCapture = utils.getIndex(squareInFrontFR.file - 1 as AxisVal, squareInFrontFR.rank);
+    const rightCapture = utils.getIndex(squareInFrontFR.file + 1 as AxisVal, squareInFrontFR.rank);
 
     if (in1stRank && !this.board.board[square + direction] && !this.board.board[square + (direction * 2)]) {
       const target = square + (direction * 2);
@@ -59,15 +60,15 @@ export class MoveGenerator {
       this.addMoveInternal(square, target as Square);
     }
 
-    if (this.board.board[leftCapture] && utils.isWhitePiece(this.board.board[leftCapture]) !== utils.isWhitePiece(piece)) {
+    if (leftCapture !== null && this.board.board[leftCapture] && utils.isWhitePiece(this.board.board[leftCapture]) !== utils.isWhitePiece(piece)) {
       this.addMoveInternal(square, leftCapture as Square);
     }
 
-    if (this.board.board[rightCapture] && utils.isWhitePiece(this.board.board[rightCapture]) !== utils.isWhitePiece(piece)) {
+    if (rightCapture !== null && this.board.board[rightCapture] && utils.isWhitePiece(this.board.board[rightCapture]) !== utils.isWhitePiece(piece)) {
       this.addMoveInternal(square, rightCapture as Square);
     }
 
-    if ([leftCapture, rightCapture].includes(this.board.enPassant as number)) {
+    if ([leftCapture, rightCapture].includes(this.board.enPassant as Square)) {
       this.addMoveInternal(square, this.board.enPassant);
     }
   }
@@ -77,11 +78,25 @@ export class MoveGenerator {
     const piece = this.board.board[square];
     if (!piece) return;
 
-    [-17, -15, -10, -6, 6, 10, 15, 17].forEach((offset) => {
-      const target = square + offset;
+    const offsets: SquareXYoffset[] = [
+      { file: -1, rank: -2 },
+      { file: 1, rank: -2 },
+      { file: -2, rank: -1 },
+      { file: 2, rank: -1 },
+      { file: -2, rank: 1 },
+      { file: 2, rank: 1 },
+      { file: -1, rank: 2 },
+      { file: 1, rank: 2 },
+    ];
+    
+    offsets.forEach((offset) => {
+      const targetFile = utils.getFileRank(square).file + offset.file as AxisVal;
+      const targetRank = utils.getFileRank(square).rank + offset.rank as AxisVal;
+      const target = utils.getIndex(targetFile, targetRank);
+      if (target === null) return;
       const targetPiece = this.board.board[target];
       if (targetPiece && utils.isWhitePiece(targetPiece) === utils.isWhitePiece(piece)) return;
-      this.addMoveInternal(square, target as Square);
+      this.addMoveInternal(square, target);
     });
   }
 
@@ -92,12 +107,26 @@ export class MoveGenerator {
     const isWhite = utils.isWhitePiece(piece);
     const castlingRights = isWhite ? this.board.castling.w : this.board.castling.b;
 
-    [8, -8, 1, -1, 7, -7, 9, -9].forEach((offset) => {
-      const target = square + offset;
+    const offsets: SquareXYoffset[] = [
+      { file: -1, rank: -1 },
+      { file: 0, rank: -1 },
+      { file: 1, rank: -1 },
+      { file: -1, rank: 0 },
+      { file: 1, rank: 0 },
+      { file: -1, rank: 1 },
+      { file: 0, rank: 1 },
+      { file: 1, rank: 1 },
+    ];
+
+    offsets.forEach((offset) => {
+      const target = utils.getIndex(
+        utils.getFileRank(square).file + offset.file as AxisVal, 
+        utils.getFileRank(square).rank + offset.rank as AxisVal
+      );
+      if (target === null) return;
       const targetPiece = this.board.board[target];
-      if (targetPiece && utils.isWhitePiece(targetPiece) === utils.isWhitePiece(piece)) return;
-      if (target < 0 || target > 63) return;
-      this.addMoveInternal(square, target as Square);
+      if (targetPiece && utils.isWhitePiece(targetPiece) === isWhite) return;
+      this.addMoveInternal(square, target);
     });
 
     if (!isWhite) {

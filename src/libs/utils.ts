@@ -49,19 +49,24 @@ export default {
   },
 
   getIndex(file: AxisVal, rank: AxisVal) {
-    if (file === null || rank === null) return;
-    return file + rank * 8;
+    if (
+      file === null || 
+      rank === null || 
+      file < 0 || 
+      file > 7 || 
+      rank < 0 || 
+      rank > 7) return null as Square;
+    return file + rank * 8 as Square;
   },
 
   getFileRank(index: Square) {
     if (!index) return {
-      file: 0,
-      rank: 0,
-    
+      file: 0 as AxisVal,
+      rank: 0 as AxisVal,
     };
     return {
-      file: index % 8,
-      rank: Math.floor(index / 8)
+      file: index % 8 as AxisVal,
+      rank: Math.floor(index / 8) as AxisVal,
     };
   },
 

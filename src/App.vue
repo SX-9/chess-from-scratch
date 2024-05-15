@@ -50,13 +50,13 @@ export default {
     const testFens = [
       null, // default starting position
       '8/1rbqkbr1/8/8/8/8/1RBQKBR1/8 b - - 0 1', // sliding pieces
-      '1n2k1n1/1pppppp1/8/8/8/8/1PPPPPP1/1N2K1N1 w - - 0 1', // non-sliding pieces
+      '1n2k1n1/pppppppp/8/8/8/8/PPPPPPPP/1N2K1N1 w - - 0 1', // non-sliding pieces
       'r3k2r/1pppppp1/8/8/8/8/1PPPPPP1/R3K2R b KQkq - 0 1', // castling test
       'k7/ppppPPPP/8/8/8/8/ppppPPPP/7K w - - 0 1', // pawns
       'r4rk1/ppp1ppbp/2nqbnp1/3pN3/3P1B2/2PBP3/PP1N1PPP/R2QK2R b KQ - 5 9', // london system vs king's indian
     ];
     document.onselectstart = () => false;
-    this.board = new BoardArray(testFens[5]);
+    this.board = new BoardArray(testFens[2]);
     this.moveGen.load(this.board);
   },
 }
