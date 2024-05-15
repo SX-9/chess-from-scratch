@@ -13,8 +13,8 @@ export class MoveGenerator {
     this.history = [];
   }
 
-  generate(square: Square, turnCustom?: Turn) {
-    this.generatePseudo(square, turnCustom);
+  generate(square: Square, noReset?: boolean) {
+    this.generatePseudo(square, noReset);
 
     return this.moves;
   }
@@ -22,16 +22,16 @@ export class MoveGenerator {
   generateAll() {
     this.moves = [];
     for (let i = 0; i < 64; i++) {
-      this.generate(i as Square);
+      this.generate(i as Square, true);
     }
     return this.moves;
   }
 
-  generatePseudo(square: Square, turnCustom?: Turn) {
-    this.moves = [];
+  generatePseudo(square: Square, noReset?: boolean) {
+    if (!noReset) this.moves = [];
     if (square === null) return this.moves;
     const piece = this.board.board[square];
-    const turn = turnCustom || this.board.turn;
+    const turn = this.board.turn;
     const isWhiteTurn = turn === "w";
     if (!piece || utils.isWhitePiece(piece) !== isWhiteTurn) return this.move;
 
