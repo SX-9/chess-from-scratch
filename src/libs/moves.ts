@@ -65,9 +65,12 @@ export class MoveGenerator {
 
     if (in1stRank && !this.board.board[square + direction] && !this.board.board[square + (direction * 2)]) {
       const target = square + (direction * 2);
+      const targetXY = utils.getFileRank(target as Square);
       this.addMoveInternal(square, target as Square);
-      if ( (this.board.board[target + 1] && utils.isWhitePiece(this.board.board[target + 1]) !== (this.board.turn === 'w') && this.board.board[target + 1]?.toLowerCase() === "p") 
-        || (this.board.board[target - 1] && utils.isWhitePiece(this.board.board[target - 1]) !== (this.board.turn === 'w') && this.board.board[target - 1]?.toLowerCase() === "p")) {
+      const pawnOnLeft = utils.getIndex(targetXY.file - 1 as AxisVal, targetXY.rank);
+      const pawnOnRight = utils.getIndex(targetXY.file + 1 as AxisVal, targetXY.rank);
+      if ( (pawnOnLeft && this.board.board[pawnOnLeft] && utils.isWhitePiece(this.board.board[pawnOnLeft]) !== (this.board.turn === 'w') && this.board.board[pawnOnLeft]?.toLowerCase() === "p") 
+        || (pawnOnRight && this.board.board[pawnOnRight] && utils.isWhitePiece(this.board.board[pawnOnRight]) !== (this.board.turn === 'w') && this.board.board[pawnOnRight]?.toLowerCase() === "p")) {
         this.board.enPassant = target - direction as Square;
       }
     }
