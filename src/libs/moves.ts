@@ -1,4 +1,4 @@
-import { Move, Square, SquareXYoffset, Piece, AxisVal } from "./types";
+import { Move, Square, SquareXYoffset, Piece, AxisVal, Turn } from "./types";
 import { BoardArray } from "./array";
 import utils from "./utils";
 
@@ -13,12 +13,27 @@ export class MoveGenerator {
     this.history = [];
   }
 
-  generate(square: Square) {
+  generate(square: Square, turnCustom?: Turn) {
+    this.generatePseudo(square, turnCustom);
+
+    return this.moves;
+  }
+
+  generateAll() {
     this.moves = [];
-    if (square === null) return;
+    for (let i = 0; i < 64; i++) {
+      this.generate(i as Square);
+    }
+    return this.moves;
+  }
+
+  generatePseudo(square: Square, turnCustom?: Turn) {
+    this.moves = [];
+    if (square === null) return this.moves;
     const piece = this.board.board[square];
-    const isWhiteTurn = this.board.turn === "w";
-    if (!piece || utils.isWhitePiece(piece) !== isWhiteTurn) return [];
+    const turn = turnCustom || this.board.turn;
+    const isWhiteTurn = turn === "w";
+    if (!piece || utils.isWhitePiece(piece) !== isWhiteTurn) return this.move;
 
     switch (piece.toLowerCase()) {
       case "p":
@@ -34,6 +49,7 @@ export class MoveGenerator {
         this.generateSliding(square);
         break;
     }
+    return this.moves;
   }
 
   generatePawn(square: Square) {
@@ -71,6 +87,8 @@ export class MoveGenerator {
     if ([leftCapture, rightCapture].includes(this.board.enPassant as Square)) {
       this.addMoveInternal(square, this.board.enPassant);
     }
+
+    return this.moves;
   }
 
   generateKnight(square: Square) {
@@ -88,7 +106,7 @@ export class MoveGenerator {
       { file: -1, rank: 2 },
       { file: 1, rank: 2 },
     ];
-    
+
     offsets.forEach((offset) => {
       const targetFile = utils.getFileRank(square).file + offset.file as AxisVal;
       const targetRank = utils.getFileRank(square).rank + offset.rank as AxisVal;
@@ -98,6 +116,8 @@ export class MoveGenerator {
       if (targetPiece && utils.isWhitePiece(targetPiece) === utils.isWhitePiece(piece)) return;
       this.addMoveInternal(square, target);
     });
+
+    return this.moves;
   }
 
   generateKing(square: Square) {
@@ -144,6 +164,8 @@ export class MoveGenerator {
         this.addMoveInternal(square, 58);
       }
     }
+
+    return this.moves;
   }
 
   generateSliding(square: Square) {
@@ -157,6 +179,7 @@ export class MoveGenerator {
     ].slice(start, end);
 
     offsets.forEach((offset) => this.generateSlidingDirection(square, offset));
+
     return this.moves;
   }
 
@@ -185,6 +208,7 @@ export class MoveGenerator {
       enPassant: this.board.enPassant === to,
       castling: this.board.board[from]?.toLowerCase() === "k" && [2, 6, 58, 62].includes(to),
       capture: !!this.board.board[to] || this.board.enPassant === to,
+      kingCapture: this.board.board[to]?.toLowerCase() === "k",
     };
     this.moves.push(move);
   }
@@ -239,8 +263,10 @@ export class MoveGenerator {
     }
   }
 
-  move(move: Move) {
-    this.generate(move.from);
+  move(move: Move, pseudoLegalCheck?: boolean) {
+    if (!pseudoLegalCheck) this.generate(move.from);
+    else this.generatePseudo(move.from);
+
     const legalMoves = this.moves.map((e) => utils.moveIdentifier(e));
     if (!legalMoves.includes(utils.moveIdentifier(move))) return false;
     const index = legalMoves.indexOf(utils.moveIdentifier(move));

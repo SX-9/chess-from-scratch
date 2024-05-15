@@ -12,10 +12,21 @@ export class BoardArray {
   halfMove: number = 0;
   fullMove: number = 0;
 
-  constructor(fen: string | null) {
+  constructor(fen: string | BoardArray | null) {
     if (!fen)
       this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
-    else this.fen = fen;
+    else {
+      if (fen instanceof BoardArray) {
+        this.fen = Object.assign({}, fen.fen);
+        this.board = Object.assign({}, fen.board);
+        this.turn = Object.assign({}, fen.turn);
+        this.castling = Object.assign({}, fen.castling);
+        this.enPassant = Object.assign({}, fen.enPassant);
+        this.halfMove = Object.assign({}, fen.halfMove);
+        this.fullMove = Object.assign({}, fen.fullMove);
+        return;
+      } else this.fen = fen
+    };
 
     this.fen.split(" ").forEach((part: any, i) => {
       switch (i) {

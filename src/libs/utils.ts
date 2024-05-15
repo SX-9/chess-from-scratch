@@ -38,14 +38,19 @@ export default {
     return ascii;
   },
 
+  asciiHighlights(highlights: boolean[]) {
+    let ascii = '';
+    for (let i = 0; i < 64; i++) {
+      ascii += highlights[i] ? '+' : '-';
+      if (i % 8 === 7) ascii += '\n';
+    }
+    return ascii;
+  },
+
   moveIdentifier(move: Move, complete?: boolean) {
-    return !complete 
-      ? `${move.from}-${move.to}`
-      : (
-        ! move.castling 
-        ? `${move.piece?.toLocaleLowerCase()}${move.from}=>${move.capture ? 'x' : ''}${move.promotion || move.to}`
-        : `castle${[2, 58].includes(move.to as number) ? 'K' : 'Q'}`
-      );
+    if (!complete) return `${move.from}-${move.to}`;
+    else if (move.castling) return `castle${[2, 58].includes(move.to as number) ? 'K' : 'Q'}`;
+    else return `${move.piece?.toLocaleLowerCase()}${move.from}=>${move.capture ? 'x' : ''}${move.promotion || move.to}`;
   },
 
   getIndex(file: AxisVal, rank: AxisVal) {

@@ -11,6 +11,7 @@ export type Move = {
   enPassant?: boolean;
   castling?: boolean;
   capture?: boolean;
+  kingCapture?: boolean;
 };
 export type SquareXYoffset = {
   file: number;
