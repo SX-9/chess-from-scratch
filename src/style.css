@@ -86,7 +86,7 @@ div#history > div {
   gap: 1em;
   grid-template-columns: 5em 5em;
   overflow-y: scroll;
-  max-height: 28em;
+  max-height: 24em;
   margin: .2em;
 }
 
