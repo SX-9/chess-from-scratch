@@ -56,7 +56,7 @@ export class MoveGenerator {
     if (square === null) return;
     const piece = this.board.board[square];
     if (!piece) return;
-    debugger
+
     const direction = utils.isWhitePiece(piece) ? -8 : 8;
     const in1stRank = utils.getFileRank(square).rank === (utils.isWhitePiece(piece) ? 6 : 1);
     const squareInFrontFR = utils.getFileRank(square + direction as Square);
