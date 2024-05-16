@@ -90,28 +90,6 @@ export default {
 </script>
 
 <template>
-  <div id="history">
-    <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
-    <button @click="showFen()">show starting fen</button>
-    <br><br>
-    <button @click="highlightAllMoves()">show all moves</button>
-    <br><br>
-    <label for="promotion">promotion: </label>
-    <select id="promotion" v-model="promotion">
-      <option value="q">queen</option>
-      <option value="r">rook</option>
-      <option value="b">bishop</option>
-      <option value="n">knight</option>
-    </select>
-    <br>
-    <div>
-      <div :class="move.turn" v-for="move in moveGen.history">
-        <p>
-          {{ moveIdentifier(move, true) }}
-        </p>
-      </div>
-    </div>
-  </div>
   <div id="board" :class="numbered ? 'smaller' : ''">
     <div 
       @dragover.prevent 
@@ -127,49 +105,73 @@ export default {
       <img v-if="piece" :src="'./assets/' + piece + '.svg'">
     </div>
   </div>
-  <div id="controls">
-    <label for="numbered">show square indexes:</label>
-    <input type="checkbox" id="numbered" v-model="numbered">
-    <p>{{ dragged }} => {{ dropped }}</p>
-    <p class="word-wrap">{{ Array.from(highlights.highlights.entries()).filter(c => c[1]).map(c => c[0]).join(' ') || 'none selected' }}</p>
-    <button @click="highlights.clearHighlights()">clear highlights</button>
-    <hr>
-    <ul>
-      <li v-for="[k,v] in Object.entries({
+  <div :style="{ display: 'flex', gap: '1em', justifyContent: 'space-between' }">
+    <div id="history">
+      <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
+      <button @click="showFen()">show starting fen</button>
+      <br><br>
+      <button @click="highlightAllMoves()">show all moves</button>
+      <br><br>
+      <label for="promotion">promotion: </label>
+      <select id="promotion" v-model="promotion">
+        <option value="q">queen</option>
+        <option value="r">rook</option>
+        <option value="b">bishop</option>
+        <option value="n">knight</option>
+      </select>
+      <br>
+      <div>
+        <div :class="move.turn" v-for="move in moveGen.history">
+          <p>
+            {{ moveIdentifier(move, true) }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="controls">
+      <label for="numbered">show square indexes:</label>
+      <input type="checkbox" id="numbered" v-model="numbered">
+      <p>{{ dragged }} => {{ dropped }}</p>
+      <p class="word-wrap">{{ Array.from(highlights.highlights.entries()).filter(c => c[1]).map(c => c[0]).join(' ') || 'none selected' }}</p>
+      <button @click="highlights.clearHighlights()">clear highlights</button>
+      <hr>
+      <ul>
+        <li v-for="[k,v] in Object.entries({
           enPassant: board.enPassant,
           halfMove: board.halfMove,
           fullMove: board.fullMove,
         })">
-        <strong>{{ k }}:</strong> {{ v || 'none' }}  
-      </li>
-    </ul>
-    <div :style="{ display: 'flex', gap: '1em' }">
-      <pre>{{ asciiString(board.board) }}</pre>
-      <pre>{{ asciiHighlights(highlights.highlights as boolean[]) }}</pre>
+          <strong>{{ k }}:</strong> {{ v || 'none' }}
+        </li>
+      </ul>
+      <div :style="{ display: 'flex', gap: '1em' }">
+        <pre>{{ asciiString(board.board) }}</pre>
+        <pre>{{ asciiHighlights(highlights.highlights as boolean[]) }}</pre>
+      </div>
+      <table>
+        <tr>
+          <th>castling</th>
+          <th>king</th>
+          <th>queen</th>
+        </tr>
+        <tr>
+          <th>white</th>
+          <td>{{ board.castling.w.k }}</td>
+          <td>{{ board.castling.w.q }}</td>
+        </tr>
+        <tr>
+          <th>black</th>
+          <td>{{ board.castling.b.k }}</td>
+          <td>{{ board.castling.b.q }}</td>
+        </tr>
+      </table>
+      <hr>
+      <ul>
+        <li>square index: {{ lastSel }}</li>
+        <li v-for="[k,v] in Object.entries(getFileRank(lastSel as Square))">{{ k }}: {{ v }}</li>
+        <li>piece: {{ board.board[lastSel] || 'empty' }}</li>
+        <li>last click: {{ lastClicked }}</li>
+      </ul>
     </div>
-    <table>
-      <tr>
-        <th>castling</th>
-        <th>king</th>
-        <th>queen</th>
-      </tr>
-      <tr>
-        <th>white</th>
-        <td>{{ board.castling.w.k }}</td>
-        <td>{{ board.castling.w.q }}</td>
-      </tr>
-      <tr>
-        <th>black</th>
-        <td>{{ board.castling.b.k }}</td>
-        <td>{{ board.castling.b.q }}</td>
-      </tr>
-    </table>
-    <hr>
-    <ul>
-      <li>square index: {{ lastSel }}</li>
-      <li v-for="[k,v] in Object.entries(getFileRank(lastSel as Square))">{{ k }}: {{ v }}</li>
-      <li>piece: {{ board.board[lastSel] || 'empty' }}</li>
-      <li>last click: {{ lastClicked }}</li>
-    </ul>
   </div>
 </template>

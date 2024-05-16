@@ -8,16 +8,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
 }
 
 #app {
   display: flex;
+  grid-template-rows: 1fr 1fr;
   gap: 1em;
+  height: 100%;
+}
+
+@media (max-width: 950px) {
+  #app {
+    display: grid;
+  }
 }
 
 div#board {
+  grid: "board";
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
@@ -76,6 +85,7 @@ img {
 }
 
 div#history {
+  grid: "history";
   max-width: 20em;
   max-height: 38em;
 }
@@ -107,6 +117,7 @@ div#history > div div.w {
 }
 
 div#controls {
+  grid: "controls";
   max-width: 14em;
   max-height: 38em;
   width: 100%;
