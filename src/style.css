@@ -9,6 +9,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  min-width: max-content;
+  padding: 1em;
   margin: 0;
 }
 
