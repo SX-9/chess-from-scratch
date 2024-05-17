@@ -90,7 +90,7 @@ export default {
 </script>
 
 <template>
-  <div id="board" :class="numbered ? 'smaller' : ''">
+  <div id="board">
     <div 
       @dragover.prevent 
       @drop.prevent="(e) => pieceDrop(e, i)" 

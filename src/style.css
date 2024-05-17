@@ -37,6 +37,7 @@ div#board {
 }
 
 div#board > div {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,10 +49,17 @@ div#board > div p {
   width: 100%;
   text-align: center;
   margin: 0;
-  color: black;
+  position: absolute;
+  left: 0;
+}
+
+div#board > div img {
+  aspect-ratio: 1/1;
+  width: 4.5em;
 }
 
 div#board > div:has(img) p {
+  top: 0;
   text-align: left;
 }
 
@@ -73,14 +81,12 @@ background-color: hsl(9, 76%, 67%); }
 div#board > div.black.highlight {
 background-color: hsl(13, 60%, 57%); }
 
-img {
-  aspect-ratio: 1/1;
-  width: 4.5em;
-}
-
-.smaller img {
-  width: 3.5em;
-}
+div#board > div.white p {
+color: hsl(90, 27%, 46%); }
+div#board > div.black p {
+color: hsl(62, 42%, 87%); }
+div#board > div.highlight p {
+color: black; }
 
 [draggable] {
   cursor: grab;
