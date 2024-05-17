@@ -102,7 +102,7 @@ export default {
       :class="((getFileRank(i as Square).file + getFileRank(i as Square).rank) % 2 === 0 ? 'white' : 'black') + (highlights.highlights[i] ? ' highlight' : '')"
       v-for="[i, piece] in board.board.entries()">
       <p v-if="numbered">{{ i }}</p>
-      <img v-if="piece" :src="'./assets/' + piece + '.svg'">
+      <img v-if="piece" :src="'./assets/' + piece + '.png'">
     </div>
   </div>
   <div :style="{ display: 'flex', gap: '1em', justifyContent: 'space-between' }">

@@ -63,13 +63,13 @@ div#board > div:nth-child(57) {
 border-radius: 0 0 0 .7em; }
 
 div#board > div.white {
-background-color: hsl(90, 45%, 88%); }
+background-color: hsl(62, 42%, 87%); }
 div#board > div.black {
 background-color: hsl(90, 27%, 46%); }
 div#board > div.white.highlight {
-background-color: hsl(0, 45%, 80%); }
+background-color: hsl(13, 60%, 57%); }
 div#board > div.black.highlight {
-background-color: hsl(0, 27%, 46%); }
+background-color: hsl(9, 76%, 67%); }
 
 img {
   aspect-ratio: 1/1;
