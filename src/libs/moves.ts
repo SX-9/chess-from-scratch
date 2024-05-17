@@ -4,18 +4,45 @@ import utils from "./utils";
 
 export class MoveGenerator {
   board: BoardArray = new BoardArray(null);
-  moves: Move[] = [];
-  history: Move[] = [];
+  moves: Move[];
+  history: Move[];
+  ignoreTurn: boolean;
+  attacked: {
+    white: boolean[],
+    black: boolean[],
+  };
+
+  constructor() {
+    this.moves = [];
+    this.history = [];
+    this.ignoreTurn = false;
+    this.attacked = {
+      white: [],
+      black: [],
+    };
+  }
 
   load(board: BoardArray) {
     this.board = board;
-    this.moves = [];
-    this.history = [];
+  }
+
+  generateAttacked() {
+    this.attacked.white = Array(64).fill(false);
+    this.attacked.black = Array(64).fill(false);
+    
+    this.generateAll();
+    this.moves.forEach((move) => {
+      if (move.to !== null) {
+        if (move.turn === "w") this.attacked.white[move.to] = true;
+        else this.attacked.black[move.to] = true;
+      }
+    });
   }
 
   generate(square: Square, noReset?: boolean) {
     this.generatePseudo(square, noReset);
-
+    // todo: delete moves that leave king in check
+    // aka illegal moves
     return this.moves;
   }
 
