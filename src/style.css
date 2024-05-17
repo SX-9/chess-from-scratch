@@ -69,9 +69,9 @@ background-color: hsl(62, 42%, 87%); }
 div#board > div.black {
 background-color: hsl(90, 27%, 46%); }
 div#board > div.white.highlight {
-background-color: hsl(13, 60%, 57%); }
-div#board > div.black.highlight {
 background-color: hsl(9, 76%, 67%); }
+div#board > div.black.highlight {
+background-color: hsl(13, 60%, 57%); }
 
 img {
   aspect-ratio: 1/1;
