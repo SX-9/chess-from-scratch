@@ -68,6 +68,7 @@ export default {
       highlights: new Highlights(),
       engine: new Engine(),
       numbered: true,
+      flipped: false,
       promotion: 'q',
       lastSel: -1,
       dragged: -1,
@@ -94,7 +95,7 @@ export default {
 </script>
 
 <template>
-  <div id="board">
+  <div id="board" :class="flipped ? 'flipped' : ''">
     <div 
       @dragover.prevent 
       @drop.prevent="(e) => pieceDrop(e, i)" 
@@ -102,7 +103,7 @@ export default {
       @mouseover="() => lastSel = i" 
       @contextmenu.prevent="() => highlights.toggleHighlight(i as Square)"
       @click="() => squareClick(i as Square)"
-      role="button" :draggable="!!piece" 
+      role="button" :draggable="!!piece"
       :class="((getFileRank(i as Square).file + getFileRank(i as Square).rank) % 2 === 0 ? 'white' : 'black') + (highlights.highlights[i] ? ' highlight' : '')"
       v-for="[i, piece] in board.board.entries()">
       <p v-if="numbered">{{ i }}</p>
@@ -137,8 +138,10 @@ export default {
       <button @click="eval = engine.evaluate()">evaluate</button>
     </div>
     <div id="controls">
-      <label for="numbered">show square indexes:</label>
+      <label for="numbered">square indexes:</label>
       <input type="checkbox" id="numbered" v-model="numbered">
+      <label for="flipped">flip pieces</label>
+      <input type="checkbox" id="flipped" v-model="flipped">
       <p>{{ dragged }} => {{ dropped }}</p>
       <p class="word-wrap">{{ Array.from(highlights.highlights.entries()).filter(c => c[1]).map(c => c[0]).join(' ') || 'none selected' }}</p>
       <button @click="highlights.clearHighlights()">clear highlights</button>

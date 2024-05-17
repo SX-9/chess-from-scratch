@@ -44,6 +44,10 @@ div#board > div {
   flex-direction: column;
 }
 
+div#board.flipped > div {
+  transform: rotate(180deg);
+}
+
 div#board > div p {
   cursor: default;
   width: 100%;
@@ -71,6 +75,15 @@ div#board > div:nth-child(64) {
 border-radius: 0 0 .7em 0; }
 div#board > div:nth-child(57) {
 border-radius: 0 0 0 .7em; }
+
+div#board.flipped > div:nth-child(1) {
+  border-radius: 0 0 .7em 0; }
+  div#board.flipped > div:nth-child(8) {
+  border-radius: 0 0 0 .7em; }
+  div#board.flipped > div:nth-child(64) {
+    border-radius: .7em 0 0 0; }
+    div#board.flipped > div:nth-child(57) {
+      border-radius: 0 .7em 0 0; }
 
 div#board > div.white {
 background-color: hsl(62, 42%, 87%); }
