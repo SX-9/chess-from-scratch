@@ -2,6 +2,7 @@
 import { Highlights, BoardArray } from './libs/array'
 import { Square, Move } from './libs/types';
 import { MoveGenerator } from './libs/moves';
+import { Engine } from './libs/engine';
 import utils from './libs/utils';
 
 export default {
@@ -65,12 +66,14 @@ export default {
       board: new BoardArray(null),
       moveGen: new MoveGenerator(),
       highlights: new Highlights(),
+      engine: new Engine(),
       numbered: true,
       promotion: 'q',
       lastSel: -1,
       dragged: -1,
       dropped: -1,
       lastClicked: -1,
+      eval: 0,
     }
   },
   mounted() {
@@ -85,6 +88,7 @@ export default {
     document.onselectstart = () => false;
     this.board = new BoardArray(testFens[0]);
     this.moveGen.load(this.board);
+    this.engine.load(this.board, this.moveGen);
   },
 }
 </script>
@@ -127,6 +131,10 @@ export default {
           </p>
         </div>
       </div>
+    </div>
+    <div id="engine">
+      <p>engine eval: {{ eval }}</p>
+      <button @click="eval = engine.evaluate()">evaluate</button>
     </div>
     <div id="controls">
       <label for="numbered">show square indexes:</label>

@@ -131,6 +131,13 @@ div#controls {
   width: 100%;
 }
 
+div#engine {
+  grid: "engine";
+  max-width: 14em;
+  max-height: 38em;
+  width: 100%;
+}
+
 pre {
   line-height: 12px;
   letter-spacing: 1px;
