@@ -1,4 +1,4 @@
-import { Move, Square, SquareXYoffset, Piece, AxisVal, Turn } from "./types";
+import { Move, Square, SquareXYoffset, Piece, AxisVal, Color } from "./types";
 import { BoardArray } from "./array";
 import utils from "./utils";
 
@@ -7,7 +7,7 @@ export class MoveGenerator {
   moves: Move[];
   history: Move[];
   ignoreTurn: boolean;
-  kingCaptured: Turn;
+  kingCaptured: Color;
   attacked: {
     white: boolean[],
     black: boolean[],

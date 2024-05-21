@@ -1,9 +1,9 @@
-import { Square, Turn, CastlingRights, Piece } from "./types.ts";
+import { Square, Color, CastlingRights, Piece } from "./types.ts";
 
 export class BoardArray {
   fen: string = "";
   board: Piece[] = [];
-  turn: Turn = "";
+  turn: Color = "";
   castling: CastlingRights = {
     w: { k: false, q: false },
     b: { k: false, q: false },

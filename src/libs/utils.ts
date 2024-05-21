@@ -1,6 +1,15 @@
-import { Square, AxisVal, Piece, Move } from './types';
+import { Square, AxisVal, Piece, Move, Color } from './types';
 
 export default {
+  getSquareInfo(square: Square, board: Piece[]) {
+    return { 
+      ...this.getFileRank(square),
+      index: square,
+      piece: square !== null && board[square],
+      color: square !== null && board[square] && this.isWhitePiece(board[square]) ? 'w' : 'b' as Color,
+    };
+  },
+
   nSquaresTillEdge(square: Square, direction: number): number {
     if (square === null) return 0;
 
