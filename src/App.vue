@@ -67,7 +67,7 @@ export default {
       moveGen: new MoveGenerator(),
       highlights: new Highlights(),
       engine: new Engine(),
-      numbered: true,
+      numbered: location.hostname === "localhost",
       flipped: false,
       promotion: 'q',
       lastSel: -1,
@@ -105,38 +105,13 @@ export default {
       @click="() => squareClick(i as Square)"
       role="button" :draggable="!!piece"
       :class="((getFileRank(i as Square).file + getFileRank(i as Square).rank) % 2 === 0 ? 'white' : 'black') + (highlights.highlights[i] ? ' highlight' : '')"
+      :style="{ opacity: moveGen.kingCaptured ? 0.7 : 1 }"
       v-for="[i, piece] in board.board.entries()">
       <p v-if="numbered">{{ i }}</p>
       <img v-if="piece" :src="'./assets/' + piece + '.png'">
     </div>
   </div>
   <div :style="{ display: 'flex', gap: '1em', justifyContent: 'space-between' }">
-    <div id="history">
-      <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
-      <button @click="showFen()">show starting fen</button>
-      <br><br>
-      <button @click="highlightAllMoves()">show all moves</button>
-      <br><br>
-      <label for="promotion">promotion: </label>
-      <select id="promotion" v-model="promotion">
-        <option value="q">queen</option>
-        <option value="r">rook</option>
-        <option value="b">bishop</option>
-        <option value="n">knight</option>
-      </select>
-      <br>
-      <div>
-        <div :class="move.turn" v-for="move in moveGen.history">
-          <p>
-            {{ moveIdentifier(move, true) }}
-          </p>
-        </div>
-      </div>
-    </div>
-    <div id="engine">
-      <p>engine eval: {{ eval }}</p>
-      <button @click="eval = engine.evaluate()">evaluate</button>
-    </div>
     <div id="controls">
       <label for="numbered">square indexes:</label>
       <input type="checkbox" id="numbered" v-model="numbered">
@@ -151,6 +126,7 @@ export default {
           enPassant: board.enPassant,
           halfMove: board.halfMove,
           fullMove: board.fullMove,
+          gameOver: !!moveGen.kingCaptured,
         })">
           <strong>{{ k }}:</strong> {{ v || 'none' }}
         </li>
@@ -183,6 +159,32 @@ export default {
         <li>piece: {{ board.board[lastSel] || 'empty' }}</li>
         <li>last click: {{ lastClicked }}</li>
       </ul>
+    </div>
+    <div id="history">
+      <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
+      <button @click="showFen()">show starting fen</button>
+      <br><br>
+      <button @click="highlightAllMoves()">show all moves</button>
+      <br><br>
+      <label for="promotion">promotion: </label>
+      <select id="promotion" v-model="promotion">
+        <option value="q">queen</option>
+        <option value="r">rook</option>
+        <option value="b">bishop</option>
+        <option value="n">knight</option>
+      </select>
+      <br>
+      <div>
+        <div :class="move.turn" v-for="move in moveGen.history">
+          <p>
+            {{ moveIdentifier(move, true) }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="engine">
+      <p>engine eval: {{ eval }}</p>
+      <button @click="eval = engine.evaluate()">evaluate</button>
     </div>
   </div>
 </template>

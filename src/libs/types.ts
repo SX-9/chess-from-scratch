@@ -8,10 +8,10 @@ export type Move = {
   turn: Turn;
   piece?: Piece;
   promotion?: Piece;
+  kingCapture?: Turn;
   enPassant?: boolean;
   castling?: boolean;
   capture?: boolean;
-  kingCapture?: boolean;
 };
 export type SquareXYoffset = {
   file: number;

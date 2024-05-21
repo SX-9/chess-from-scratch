@@ -1,4 +1,4 @@
-import { Move, Square, SquareXYoffset, Piece, AxisVal } from "./types";
+import { Move, Square, SquareXYoffset, Piece, AxisVal, Turn } from "./types";
 import { BoardArray } from "./array";
 import utils from "./utils";
 
@@ -7,12 +7,14 @@ export class MoveGenerator {
   moves: Move[];
   history: Move[];
   ignoreTurn: boolean;
+  kingCaptured: Turn;
   attacked: {
     white: boolean[],
     black: boolean[],
   };
 
   constructor() {
+    this.kingCaptured = "";
     this.moves = [];
     this.history = [];
     this.ignoreTurn = false;
@@ -239,7 +241,7 @@ export class MoveGenerator {
       enPassant: this.board.enPassant === to,
       castling: this.board.board[from]?.toLowerCase() === "k" && [2, 6, 58, 62].includes(to),
       capture: !!this.board.board[to] || this.board.enPassant === to,
-      // kingCapture: this.board.board[to]?.toLowerCase() === "k",
+      kingCapture: to && typeof this.board.board[to] === "string" && this.board.board[to]?.toLowerCase() === "k" ? (utils.isWhitePiece(this.board.board[to]) ? "w" : "b") : "",
     };
     this.moves.push(move);
   }
@@ -292,9 +294,12 @@ export class MoveGenerator {
           break;
       }
     }
+
+    if (lastMove.kingCapture) this.kingCaptured = lastMove.kingCapture;
   }
 
   move(move: Move, pseudoLegalCheck?: boolean) {
+    if (this.kingCaptured) return false;
     if (!pseudoLegalCheck) this.generate(move.from);
     else this.generatePseudo(move.from);
 

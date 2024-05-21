@@ -32,8 +32,15 @@ div#board {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
+  background-color: white;
   width: 40em;
   aspect-ratio: 1/1;
+  border-radius: .9em;
+  border: .2em solid hsl(0, 0%, 29%);
+}
+
+div#board.flipped {
+  transform: rotate(180deg);
 }
 
 div#board > div {
