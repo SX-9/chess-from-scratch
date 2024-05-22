@@ -112,7 +112,7 @@ export default {
     <div id="controls">
       <label for="numbered">square indexes:</label>
       <input type="checkbox" id="numbered" v-model="numbered">
-      <label for="flipped">flip pieces</label>
+      <label for="flipped">auto flip:</label>
       <input type="checkbox" id="flipped" v-model="flipped">
       <p>{{ dragged }} => {{ dropped }}</p>
       <p class="word-wrap">{{ Array.from(highlights.highlights.entries()).filter(c => c[1]).map(c => c[0]).join(' ') || 'none selected' }}</p>
@@ -158,7 +158,7 @@ export default {
       </ul>
     </div>
     <div id="history">
-      <h2><i>{{ board.turn === 'w' ? 'White' : 'Black' }}'s</i> Turn</h2>
+      <h2>{{ board.turn === 'w' ? 'White' : 'Black' }}{{ !!moveGen.kingCaptured ? ' Lost' : '\'s Turn' }}</h2>
       <button @click="showFen()">show starting fen</button>
       <br><br>
       <button @click="highlightAllMoves()">show all moves</button>
