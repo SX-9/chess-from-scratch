@@ -92,7 +92,7 @@ export default {
 </script>
 
 <template>
-  <div id="board" :class="flipped ? 'flipped' : ''">
+  <div id="board" :class="board.turn === 'b' && flipped ? 'flipped' : ''">
     <div 
       @dragover.prevent 
       @drop.prevent="(e) => pieceDrop(e, i)" 
