@@ -239,7 +239,7 @@ export class MoveGenerator {
       turn: this.board.turn,
       piece: this.board.board[from],
       enPassant: this.board.enPassant === to,
-      castling: this.board.board[from]?.toLowerCase() === "k" && [2, 6, 58, 62].includes(to),
+      castling: this.board.board[from]?.toLowerCase() === "k" && [60, 4].includes(from) && [2, 6, 58, 62].includes(to),
       capture: !!this.board.board[to] || this.board.enPassant === to,
       kingCapture: to && typeof this.board.board[to] === "string" && this.board.board[to]?.toLowerCase() === "k" ? (utils.isWhitePiece(this.board.board[to]) ? "w" : "b") : "",
     };
